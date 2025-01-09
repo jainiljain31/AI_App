@@ -13,6 +13,8 @@ export const createUserController = async (req, res, next) => {
 
     const token = await user.generateJWT();
 
+    delete user._doc.password;
+
     return res.status(201).json({ user, token });
   } catch (error) {
     console.log(error);
@@ -36,6 +38,8 @@ export const loginController = async (req, res) => {
       return res.status(401).json({ error: "Invalid email or password" });
     }
     const token = await user.generateJWT();
+    delete user._doc.password;
+
     return res.status(200).json({ user, token });
   } catch (error) {
     console.log(error);
@@ -54,7 +58,6 @@ export const logoutController = async (req, res) => {
     redisClient.set(token, "logout", "EX", 60 * 60 * 24);
 
     return res.status(200).json({ message: "Logged out successfully" });
-    
   } catch (error) {
     console.log(error);
     res.status(400).json({ error: error.message });
