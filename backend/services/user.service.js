@@ -15,3 +15,10 @@ export const createUser = async ({ email, password }) => {
   return user;
 };
 
+export const getAllUsers = async ({userId}) =>{
+
+  const users = await userModel.find({
+    _id: { $ne: userId }, // Exclude the current user from the list of users
+  });
+  return users;
+}

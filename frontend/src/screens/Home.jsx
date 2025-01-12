@@ -1,7 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/user.context";
 import { useNavigate } from "react-router-dom";
-import axios from "../config/axios";
+import axiosInstace from "../config/axios";
 
 const Home = () => {
   const { user } = useContext(UserContext);
@@ -14,17 +14,30 @@ const Home = () => {
   const createProject = (e) => {
     e.preventDefault();
 
-    axios
+    axiosInstace
       .post("/projects/create", {
         name: projectName,
       })
       .then((res) => {
+        console.log("created");
         console.log(res);
+        setIsModalOpen(false);
       })
-      .catch((e) => {
-        console.log(e);
+      .catch((error) => {
+        console.log(error);
       });
   };
+
+  useEffect(() => {
+    axiosInstace
+      .get("/projects/all")
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   return (
     <main className="p-4">
