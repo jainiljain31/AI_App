@@ -114,6 +114,7 @@ const Home = () => {
         </div>
       )}
     </main>
+    
   );
 };
 
